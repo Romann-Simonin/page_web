@@ -20,12 +20,12 @@ function ajouterTexte() {
 
 function afficherDonnees() {
   const container = document.getElementById("contenuAjoute");
-  container.innerHTML = ""; // Vide la zone avant d'afficher les données
+  container.innerHTML = ""; // Vide le conteneur avant d'afficher les nouvelles données
 
   const donnees = JSON.parse(localStorage.getItem("donnees")) || [];
 
   donnees.forEach((texte, index) => {
-    // Créer un conteneur pour le texte et le bouton
+    // Créer un conteneur pour chaque texte et bouton
     const donneesContainer = document.createElement("div");
     donneesContainer.className = "donnees-container";
 
@@ -46,6 +46,7 @@ function afficherDonnees() {
     container.appendChild(donneesContainer);
   });
 }
+
 
 
 // Fonction pour supprimer un texte spécifique

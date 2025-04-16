@@ -20,28 +20,34 @@ function ajouterTexte() {
 
 function afficherDonnees() {
   const container = document.getElementById("contenuAjoute");
-  container.innerHTML = "";
+  container.innerHTML = ""; // Vide la zone avant d'afficher les données
+
   const donnees = JSON.parse(localStorage.getItem("donnees")) || [];
 
   donnees.forEach((texte, index) => {
+    // Créer un paragraphe pour chaque donnée
     const paragraphe = document.createElement("p");
     paragraphe.textContent = texte;
 
-    const boutonSupprimer = document.createElement("button");
-    boutonSupprimer.textContent = "Supprimer";
-    boutonSupprimer.onclick = () => supprimerTexte(index); // Passer l'index pour supprimer ce texte
+    // Créer un bouton de suppression
+    const boutonSuppression = document.createElement("button");
+    boutonSuppression.textContent = "Supprimer";
+    boutonSuppression.onclick = () => supprimerTexte(index);
 
-    paragraphe.appendChild(boutonSupprimer);
+    // Ajouter le paragraphe et le bouton dans le container
     container.appendChild(paragraphe);
+    container.appendChild(boutonSuppression);
   });
 }
 
+// Fonction pour supprimer un texte spécifique
 function supprimerTexte(index) {
   let donnees = JSON.parse(localStorage.getItem("donnees")) || [];
-  donnees.splice(index, 1); // Enlève le texte à l'index spécifié
-  localStorage.setItem("donnees", JSON.stringify(donnees));
-  afficherDonnees(); // Actualise l'affichage des données
+  donnees.splice(index, 1); // Supprimer l'élément à l'index spécifié
+  localStorage.setItem("donnees", JSON.stringify(donnees)); // Mettre à jour le localStorage
+  afficherDonnees(); // Réafficher les données après suppression
 }
+
 
 
 // Appelle l'affichage au chargement de la page

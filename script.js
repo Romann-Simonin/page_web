@@ -6,7 +6,6 @@ function openTab(tabId) {
   activeTab.style.display = 'block';
 }
 
-
 function ajouterTexte() {
   const texte = document.getElementById("zoneTexte").value;
   const fichierImage = document.getElementById("imageFile").files[0];
@@ -42,7 +41,6 @@ function ajouterTexte() {
   }
 }
 
-
 function sauvegarderDonnee(texte, imageData) {
   let donnees = JSON.parse(localStorage.getItem("donnees")) || [];
   donnees.push({ texte, imageURL: imageData });
@@ -50,48 +48,38 @@ function sauvegarderDonnee(texte, imageData) {
   afficherDonnees();
 }
 
-
 function afficherDonnees() {
   const container = document.getElementById("contenuAjoute");
   container.innerHTML = "";
-
   const donnees = JSON.parse(localStorage.getItem("donnees")) || [];
 
-  donnees.forEach((item, index) => {
-    const ligne = document.createElement("div");
-    ligne.style.display = "flex";
-    ligne.style.justifyContent = "space-between";
-    ligne.style.alignItems = "center";
-    ligne.style.marginBottom = "10px";
+  donnees.forEach((element, index) => {
+    const div = document.createElement("div");
+    div.style.display = "flex";
+    div.style.justifyContent = "space-between";
+    div.style.alignItems = "center";
+    div.style.marginBottom = "10px";
 
-    const contenu = document.createElement("div");
-    contenu.style.textAlign = "left";
-
-    const paragraphe = document.createElement("p");
-    paragraphe.textContent = item.texte;
-    contenu.appendChild(paragraphe);
-
-    if (item.image) {
-      const img = document.createElement("img");
-      img.src = item.image;
-      img.style.maxWidth = "200px";
-      img.style.marginTop = "5px";
-      contenu.appendChild(img);
+    if (element.type === "text") {
+      const paragraphe = document.createElement("p");
+      paragraphe.textContent = element.content;
+      div.appendChild(paragraphe);
+    } else if (element.type === "image") {
+      const image = document.createElement("img");
+      image.src = element.content;
+      image.style.maxWidth = "200px";
+      image.style.maxHeight = "150px";
+      div.appendChild(image);
     }
 
-    const boutonSupprimer = document.createElement("button");
-    boutonSupprimer.textContent = "Supprimer";
-    boutonSupprimer.onclick = function () {
-      supprimerDonnee(index);
-    };
+    const btn = document.createElement("button");
+    btn.textContent = "Supprimer";
+    btn.onclick = () => supprimerElement(index);
+    div.appendChild(btn);
 
-    ligne.appendChild(contenu);
-    ligne.appendChild(boutonSupprimer);
-
-    container.appendChild(ligne);
+    container.appendChild(div);
   });
 }
-
 
 // Fonction pour supprimer un texte spécifique
 function supprimerTexte(index) {
@@ -106,6 +94,12 @@ function effacerDonnees() {
   afficherDonnees(); // Réactualise l'affichage (qui sera vide)
 }
 
+function supprimerElement(index) {
+  let donnees = JSON.parse(localStorage.getItem("donnees")) || [];
+  donnees.splice(index, 1);
+  localStorage.setItem("donnees", JSON.stringify(donnees));
+  afficherDonnees();
+}
 
 // Appelle l'affichage au chargement de la page
 window.onload = afficherDonnees;

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Ma Première Page</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>Outil / Cartographie Saint-Étienne</h1>
+
+  <div class="tabs">
+    <button onclick="openTab('tab1')" class="tab-button">Accueil</button>
+    <button onclick="openTab('tab2')" class="tab-button">Données</button>
+  </div>
+
+  <div id="tab1" class="tab-content">
+    <p>Bienvenue sur l'onglet Accueil. Voici un texte d’introduction.</p>
+    <img src="carte_test.png" alt="Image informative" />
+  </div>
+
+  <div id="tab2" class="tab-content" style="display: none;">
+    <p>Voici l'onglet Données. Tu peux y mettre des tableaux, des infos, ce que tu veux !</p>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

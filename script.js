@@ -20,41 +20,39 @@ function ajouterTexte() {
 
 function afficherDonnees() {
   const container = document.getElementById("contenuAjoute");
-  container.innerHTML = ""; // Vide le conteneur avant d'afficher les nouvelles données
-
+  container.innerHTML = "";
   const donnees = JSON.parse(localStorage.getItem("donnees")) || [];
 
   donnees.forEach((texte, index) => {
-    // Créer un conteneur pour chaque texte et bouton
-    const donneesContainer = document.createElement("div");
-    donneesContainer.className = "donnees-container";
+    const ligne = document.createElement("div");
+    ligne.style.display = "flex";
+    ligne.style.justifyContent = "space-between";
+    ligne.style.alignItems = "center";
+    ligne.style.marginBottom = "8px";
 
-    // Créer un paragraphe pour chaque donnée
     const paragraphe = document.createElement("p");
     paragraphe.textContent = texte;
+    paragraphe.style.margin = "0";
 
-    // Créer un bouton de suppression
-    const boutonSuppression = document.createElement("button");
-    boutonSuppression.textContent = "Supprimer";
-    boutonSuppression.onclick = () => supprimerTexte(index);
+    const bouton = document.createElement("button");
+    bouton.textContent = "Supprimer";
+    bouton.onclick = () => supprimerTexte(index);
 
-    // Ajouter le paragraphe et le bouton dans le conteneur
-    donneesContainer.appendChild(paragraphe);
-    donneesContainer.appendChild(boutonSuppression);
-
-    // Ajouter le conteneur dans le container principal
-    container.appendChild(donneesContainer);
+    ligne.appendChild(paragraphe);
+    ligne.appendChild(bouton);
+    container.appendChild(ligne);
   });
 }
+
 
 
 
 // Fonction pour supprimer un texte spécifique
 function supprimerTexte(index) {
   let donnees = JSON.parse(localStorage.getItem("donnees")) || [];
-  donnees.splice(index, 1); // Supprimer l'élément à l'index spécifié
-  localStorage.setItem("donnees", JSON.stringify(donnees)); // Mettre à jour le localStorage
-  afficherDonnees(); // Réafficher les données après suppression
+  donnees.splice(index, 1); // Enlève l'élément à l'index donné
+  localStorage.setItem("donnees", JSON.stringify(donnees));
+  afficherDonnees(); // Recharge l'affichage
 }
 
 

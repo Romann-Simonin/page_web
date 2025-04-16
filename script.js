@@ -8,27 +8,29 @@ function openTab(tabId) {
 
 function ajouterTexte() {
   const texte = document.getElementById("zoneTexte").value;
+  const imageFile = document.getElementById("imageFile").files[0];
+
   if (texte.trim() !== "") {
     let donnees = JSON.parse(localStorage.getItem("donnees")) || [];
-    donnees.push({ type: "text", content: texte });
+    let newData = { type: 'text', content: texte };
+    donnees.push(newData);
     localStorage.setItem("donnees", JSON.stringify(donnees));
-    afficherDonnees();
-    document.getElementById("zoneTexte").value = "";
   }
-}
 
-function ajouterImage(event) {
-  const file = event.target.files[0];
-  if (file && file.type.startsWith("image/")) {
+  if (imageFile) {
     const reader = new FileReader();
-    reader.onload = function(e) {
+    reader.onloadend = function () {
       let donnees = JSON.parse(localStorage.getItem("donnees")) || [];
-      donnees.push({ type: "image", content: e.target.result });
+      let newData = { type: 'image', content: reader.result };
+      donnees.push(newData);
       localStorage.setItem("donnees", JSON.stringify(donnees));
-      afficherDonnees();
-    };
-    reader.readAsDataURL(file);
+    }
+    reader.readAsDataURL(imageFile);
   }
+
+  afficherDonnees();
+  document.getElementById("zoneTexte").value = "";
+  document.getElementById("imageFile").value = "";
 }
 
 function afficherDonnees() {
@@ -36,46 +38,35 @@ function afficherDonnees() {
   container.innerHTML = "";
   const donnees = JSON.parse(localStorage.getItem("donnees")) || [];
 
-  donnees.forEach((element, index) => {
-    const div = document.createElement("div");
-    div.style.display = "flex";
-    div.style.justifyContent = "space-between";
-    div.style.alignItems = "center";
-    div.style.marginBottom = "10px";
-    div.style.borderBottom = "1px solid #ccc";
-    div.style.paddingBottom = "5px";
-
-    const contenu = document.createElement("div");
-    contenu.style.flex = "1";
-
-    if (element.type === "text") {
+  donnees.forEach(data => {
+    if (data.type === 'text') {
       const paragraphe = document.createElement("p");
-      paragraphe.textContent = element.content;
-      paragraphe.style.margin = "0";
-      contenu.appendChild(paragraphe);
-    } else if (element.type === "image") {
-      const image = document.createElement("img");
-      image.src = element.content;
-      image.style.maxWidth = "200px";
-      image.style.maxHeight = "150px";
-      contenu.appendChild(image);
+      paragraphe.textContent = data.content;
+      container.appendChild(paragraphe);
     }
 
-    const btn = document.createElement("button");
-    btn.textContent = "Supprimer";
-    btn.onclick = () => supprimerElement(index);
+    if (data.type === 'image') {
+      const img = document.createElement("img");
+      img.src = data.content;
+      img.style.maxWidth = "200px"; // Limite la taille de l'image
+      container.appendChild(img);
+    }
 
-    div.appendChild(contenu);
-    div.appendChild(btn);
-    container.appendChild(div);
+    // Création du bouton pour supprimer chaque élément
+    const deleteButton = document.createElement("button");
+    deleteButton.textContent = "Supprimer";
+    deleteButton.onclick = function () {
+      supprimerElement(data);
+    };
+    container.appendChild(deleteButton);
   });
 }
 
-function supprimerElement(index) {
+function supprimerElement(dataToRemove) {
   let donnees = JSON.parse(localStorage.getItem("donnees")) || [];
-  donnees.splice(index, 1);
+  donnees = donnees.filter(data => data !== dataToRemove);
   localStorage.setItem("donnees", JSON.stringify(donnees));
-  afficherDonnees();
+  afficherDonnees(); // Met à jour l'affichage
 }
 
 function effacerDonnees() {
@@ -83,4 +74,6 @@ function effacerDonnees() {
   afficherDonnees();
 }
 
+// Appel au chargement de la page pour afficher les données sauvegardées
 window.onload = afficherDonnees;
+

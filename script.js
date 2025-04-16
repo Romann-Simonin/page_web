@@ -27,23 +27,20 @@ function afficherDonnees() {
     const paragraphe = document.createElement("p");
     paragraphe.textContent = texte;
 
-    // Création du bouton "Effacer"
-    const boutonEffacer = document.createElement("button");
-    boutonEffacer.textContent = "Effacer";
-    boutonEffacer.onclick = function() {
-      effacerTexte(index); // Appelle la fonction pour effacer le texte spécifique
-    };
+    const boutonSupprimer = document.createElement("button");
+    boutonSupprimer.textContent = "Supprimer";
+    boutonSupprimer.onclick = () => supprimerTexte(index); // Passer l'index pour supprimer ce texte
 
+    paragraphe.appendChild(boutonSupprimer);
     container.appendChild(paragraphe);
-    container.appendChild(boutonEffacer);
   });
 }
 
-function effacerTexte(index) {
+function supprimerTexte(index) {
   let donnees = JSON.parse(localStorage.getItem("donnees")) || [];
-  donnees.splice(index, 1); // Supprime l'élément à l'index donné
+  donnees.splice(index, 1); // Enlève le texte à l'index spécifié
   localStorage.setItem("donnees", JSON.stringify(donnees));
-  afficherDonnees(); // Réaffiche les données restantes
+  afficherDonnees(); // Actualise l'affichage des données
 }
 
 

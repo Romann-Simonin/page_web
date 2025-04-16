@@ -6,6 +6,7 @@ function openTab(tabId) {
   activeTab.style.display = 'block';
 }
 function ajouterTexte() {
+  console.log("Fonction Ajouter déclenchée");  // Ajoute ceci pour tester
   const texte = document.getElementById("zoneTexte").value;
   if (texte.trim() !== "") {
     let donnees = JSON.parse(localStorage.getItem("donnees")) || [];
@@ -15,6 +16,7 @@ function ajouterTexte() {
     document.getElementById("zoneTexte").value = "";
   }
 }
+
 
 function afficherDonnees() {
   const container = document.getElementById("contenuAjoute");

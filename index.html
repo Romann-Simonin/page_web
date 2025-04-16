@@ -21,11 +21,17 @@
     <div id="tab2" class="tab-content" style="display: none;">
       <p>Voici l'onglet Données. Tu peux y mettre des tableaux, des infos, ce que tu veux !</p>
       <h2>Données</h2>
-      <textarea id="zoneTexte" placeholder="Ajoutez vos données ici..." rows="6" cols="50"></textarea><br>
+
+      <textarea id="zoneTexte" placeholder="Ajoutez votre texte ici..." rows="4" cols="50"></textarea><br><br>
+
+      <input type="file" id="imageFile" accept="image/*"><br><br>
+
       <button onclick="ajouterTexte()">Ajouter</button>
+      <button onclick="effacerDonnees()">Effacer les données</button>
 
       <div id="contenuAjoute"></div>
     </div>
+
 
     <script src="script.js"></script>
   </body>

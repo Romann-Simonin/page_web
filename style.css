@@ -2,7 +2,7 @@ body {
   font-family: Arial, sans-serif;
   background-color: #f0f0f0;
   text-align: center;
-  margin-top: 50px;
+  margin: 50px;
 }
 
 h1 {
@@ -14,4 +14,30 @@ img {
   height: auto;
   margin-top: 20px;
   border-radius: 8px;
+}
+
+.tabs {
+  margin-bottom: 20px;
+}
+
+.tab-button {
+  padding: 10px 20px;
+  margin: 0 5px;
+  font-size: 16px;
+  background-color: #3498db;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.tab-button:hover {
+  background-color: #2980b9;
+}
+
+.tab-content {
+  padding: 20px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }

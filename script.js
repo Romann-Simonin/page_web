@@ -1,7 +1,6 @@
 function openTab(tabId) {
   const tabs = document.querySelectorAll('.tab-content');
   tabs.forEach(tab => tab.style.display = 'none');
-
   const activeTab = document.getElementById(tabId);
   activeTab.style.display = 'block';
 }
@@ -38,7 +37,7 @@ function afficherDonnees() {
   container.innerHTML = "";
   const donnees = JSON.parse(localStorage.getItem("donnees")) || [];
 
-  donnees.forEach(data => {
+  donnees.forEach((data, index) => {
     if (data.type === 'text') {
       const paragraphe = document.createElement("p");
       paragraphe.textContent = data.content;
@@ -56,22 +55,22 @@ function afficherDonnees() {
     const deleteButton = document.createElement("button");
     deleteButton.textContent = "Supprimer";
     deleteButton.onclick = function () {
-      supprimerElement(data);
+      supprimerElement(index); // On passe l'index pour supprimer l'élément spécifique
     };
     container.appendChild(deleteButton);
   });
 }
 
-function supprimerElement(dataToRemove) {
+function supprimerElement(index) {
   let donnees = JSON.parse(localStorage.getItem("donnees")) || [];
-  donnees = donnees.filter(data => data !== dataToRemove);
+  donnees.splice(index, 1); // Supprime l'élément par son index
   localStorage.setItem("donnees", JSON.stringify(donnees));
   afficherDonnees(); // Met à jour l'affichage
 }
 
 function effacerDonnees() {
   localStorage.removeItem("donnees");
-  afficherDonnees();
+  afficherDonnees(); // Rafraîchit l'affichage pour refléter les changements
 }
 
 // Appel au chargement de la page pour afficher les données sauvegardées

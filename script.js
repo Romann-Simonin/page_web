@@ -8,28 +8,40 @@ function openTab(tabId) {
 
 
 function ajouterTexte() {
-  const texte = document.getElementById("zoneTexte").value.trim();
-  const imageInput = document.getElementById("imageFile");
-  const file = imageInput.files[0];
+  const texte = document.getElementById("zoneTexte").value;
+  const fichierImage = document.getElementById("imageFile").files[0];
 
-  if (!texte && !file) return; // rien à ajouter
+  const lecteur = new FileReader();
 
-  if (file) {
-    const reader = new FileReader();
-    reader.onload = function (e) {
-      const imageData = e.target.result;
+  lecteur.onload = function (event) {
+    const imageDataUrl = event.target.result;
+    const nouvelleEntree = { texte: texte, image: imageDataUrl };
 
-      sauvegarderDonnee(texte, imageData);
-    };
-    reader.readAsDataURL(file);
+    let donnees = JSON.parse(localStorage.getItem("donnees")) || [];
+    donnees.push(nouvelleEntree);
+    localStorage.setItem("donnees", JSON.stringify(donnees));
+
+    afficherDonnees();
+
+    document.getElementById("zoneTexte").value = "";
+    document.getElementById("imageFile").value = "";
+  };
+
+  if (fichierImage) {
+    lecteur.readAsDataURL(fichierImage); // Lit l’image en base64
   } else {
-    sauvegarderDonnee(texte, null);
-  }
+    const nouvelleEntree = { texte: texte, image: null };
 
-  // Reset les champs
-  document.getElementById("zoneTexte").value = "";
-  document.getElementById("imageFile").value = "";
+    let donnees = JSON.parse(localStorage.getItem("donnees")) || [];
+    donnees.push(nouvelleEntree);
+    localStorage.setItem("donnees", JSON.stringify(donnees));
+
+    afficherDonnees();
+    document.getElementById("zoneTexte").value = "";
+    document.getElementById("imageFile").value = "";
+  }
 }
+
 
 function sauvegarderDonnee(texte, imageData) {
   let donnees = JSON.parse(localStorage.getItem("donnees")) || [];
@@ -39,11 +51,10 @@ function sauvegarderDonnee(texte, imageData) {
 }
 
 
-
-
 function afficherDonnees() {
   const container = document.getElementById("contenuAjoute");
   container.innerHTML = "";
+
   const donnees = JSON.parse(localStorage.getItem("donnees")) || [];
 
   donnees.forEach((item, index) => {
@@ -51,40 +62,35 @@ function afficherDonnees() {
     ligne.style.display = "flex";
     ligne.style.justifyContent = "space-between";
     ligne.style.alignItems = "center";
-    ligne.style.marginBottom = "12px";
+    ligne.style.marginBottom = "10px";
 
     const contenu = document.createElement("div");
     contenu.style.textAlign = "left";
 
-    if (item.texte) {
-      const paragraphe = document.createElement("p");
-      paragraphe.textContent = item.texte;
-      paragraphe.style.margin = "0";
-      contenu.appendChild(paragraphe);
+    const paragraphe = document.createElement("p");
+    paragraphe.textContent = item.texte;
+    contenu.appendChild(paragraphe);
+
+    if (item.image) {
+      const img = document.createElement("img");
+      img.src = item.image;
+      img.style.maxWidth = "200px";
+      img.style.marginTop = "5px";
+      contenu.appendChild(img);
     }
 
-    if (item.imageURL) {
-      const image = document.createElement("img");
-      image.src = item.imageURL;
-      image.alt = "Image ajoutée";
-      image.style.maxWidth = "200px";
-      image.style.marginTop = "5px";
-      contenu.appendChild(image);
-    }
-
-    const bouton = document.createElement("button");
-    bouton.textContent = "Supprimer";
-    bouton.onclick = () => supprimerTexte(index);
+    const boutonSupprimer = document.createElement("button");
+    boutonSupprimer.textContent = "Supprimer";
+    boutonSupprimer.onclick = function () {
+      supprimerDonnee(index);
+    };
 
     ligne.appendChild(contenu);
-    ligne.appendChild(bouton);
+    ligne.appendChild(boutonSupprimer);
+
     container.appendChild(ligne);
   });
 }
-
-
-
-
 
 
 // Fonction pour supprimer un texte spécifique
@@ -95,6 +101,10 @@ function supprimerTexte(index) {
   afficherDonnees(); // Recharge l'affichage
 }
 
+function effacerDonnees() {
+  localStorage.removeItem("donnees"); // Supprime toutes les données
+  afficherDonnees(); // Réactualise l'affichage (qui sera vide)
+}
 
 
 // Appelle l'affichage au chargement de la page

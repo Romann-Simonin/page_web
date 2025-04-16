@@ -23,17 +23,29 @@ function afficherDonnees() {
   container.innerHTML = "";
   const donnees = JSON.parse(localStorage.getItem("donnees")) || [];
 
-  donnees.forEach(texte => {
+  donnees.forEach((texte, index) => {
     const paragraphe = document.createElement("p");
     paragraphe.textContent = texte;
+
+    // Création du bouton "Effacer"
+    const boutonEffacer = document.createElement("button");
+    boutonEffacer.textContent = "Effacer";
+    boutonEffacer.onclick = function() {
+      effacerTexte(index); // Appelle la fonction pour effacer le texte spécifique
+    };
+
     container.appendChild(paragraphe);
+    container.appendChild(boutonEffacer);
   });
 }
 
-function effacerDonnees() {
-  localStorage.removeItem("donnees"); // Efface les données du localStorage
-  afficherDonnees(); // Réaffiche une zone vide
+function effacerTexte(index) {
+  let donnees = JSON.parse(localStorage.getItem("donnees")) || [];
+  donnees.splice(index, 1); // Supprime l'élément à l'index donné
+  localStorage.setItem("donnees", JSON.stringify(donnees));
+  afficherDonnees(); // Réaffiche les données restantes
 }
+
 
 // Appelle l'affichage au chargement de la page
 window.onload = afficherDonnees;

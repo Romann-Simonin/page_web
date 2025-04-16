@@ -41,3 +41,19 @@ img {
   border-radius: 8px;
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
+
+.donnees-container {
+  display: flex;
+  justify-content: space-between; /* Espacement entre le texte et le bouton */
+  align-items: center; /* Centrer verticalement */
+  margin-bottom: 10px; /* Espacement entre les éléments */
+}
+
+.donnees-container p {
+  text-align: left; /* Alignement du texte à gauche */
+  flex-grow: 1; /* Permet au texte de prendre l'espace restant */
+}
+
+.donnees-container button {
+  margin-left: 10px; /* Espacement à gauche du bouton */
+}

@@ -25,6 +25,10 @@ function afficherDonnees() {
   const donnees = JSON.parse(localStorage.getItem("donnees")) || [];
 
   donnees.forEach((texte, index) => {
+    // Créer un conteneur pour le texte et le bouton
+    const donneesContainer = document.createElement("div");
+    donneesContainer.className = "donnees-container";
+
     // Créer un paragraphe pour chaque donnée
     const paragraphe = document.createElement("p");
     paragraphe.textContent = texte;
@@ -34,11 +38,15 @@ function afficherDonnees() {
     boutonSuppression.textContent = "Supprimer";
     boutonSuppression.onclick = () => supprimerTexte(index);
 
-    // Ajouter le paragraphe et le bouton dans le container
-    container.appendChild(paragraphe);
-    container.appendChild(boutonSuppression);
+    // Ajouter le paragraphe et le bouton dans le conteneur
+    donneesContainer.appendChild(paragraphe);
+    donneesContainer.appendChild(boutonSuppression);
+
+    // Ajouter le conteneur dans le container principal
+    container.appendChild(donneesContainer);
   });
 }
+
 
 // Fonction pour supprimer un texte spécifique
 function supprimerTexte(index) {
